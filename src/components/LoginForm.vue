@@ -65,7 +65,7 @@ export default {
         })
         this.$root.user = result.data
         this.loggedIn = true
-        this.$router.push({ name: 'home' })
+        this.$router.push({ name: 'exercise' })
       } catch (err) {
         console.log('error')
         this.errorLogin = err

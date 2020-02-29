@@ -1,14 +1,14 @@
 import Vue from 'vue'
 import VueRouter from 'vue-router'
-// import axios from 'axios'
+import axios from 'axios'
 import Home from '../views/Home.vue'
 import Login from '../views/Login.vue'
-import ExercisePage from '../views/Exercise.vue'
+import Exercise from '../views/Exercise.vue'
 
 Vue.use(VueRouter)
 
 function createRouter (state) {
-  /* async function beforeEnter (to, from, next) {
+  async function beforeEnter (to, from, next) {
     try {
       const { data: user } = await axios.get('/api/me')
       state.user = user
@@ -17,7 +17,7 @@ function createRouter (state) {
       console.log('err', err)
       next('/login') // redirect to login if user is not authenticated
     }
-  } */
+  }
   // the function continues in the second panel, not enough space here
   const routes = [
     {
@@ -33,9 +33,9 @@ function createRouter (state) {
     },
     {
       path: '/exercise',
-      name: 'Exercise',
-      component: ExercisePage
-      // beforeEnter
+      name: 'exercise',
+      component: Exercise,
+      beforeEnter
     }
   ]
 
