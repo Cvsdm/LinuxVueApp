@@ -21,7 +21,7 @@ function createRouter (state) {
   // the function continues in the second panel, not enough space here
   const routes = [
     {
-      path: '/home',
+      path: '/',
       name: 'home',
       component: Home
       // beforeEnter // notice this new property
