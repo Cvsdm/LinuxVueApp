@@ -10,7 +10,7 @@ Vue.use(VueRouter)
 function createRouter (state) {
   async function beforeEnter (to, from, next) {
     try {
-      const { data: user } = await axios.get('/api/me')
+      const { data: user } = await axios.get('http://localhost:3000/api/v1/me')
       state.user = user
       next()
     } catch (err) {

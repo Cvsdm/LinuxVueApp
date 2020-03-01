@@ -6,7 +6,7 @@ import axios from 'axios'
 import VueAxios from 'vue-axios'
 
 Vue.config.productionTip = false
-axios.defaults.withCredentials = false
+axios.defaults.withCredentials = true
 Vue.use(VueAxios, axios)
 
 const state = {

@@ -27,7 +27,7 @@
         <h3>Sandbox</h3>
         <div id="editorSandbox" class="exercise-editor-ace-editor" />
         <v-form>
-          <v-btn color="success" class="mr-4">Run Code</v-btn>
+          <v-btn color="success" class="mr-4" @click="run">Run Code</v-btn>
         </v-form>
       </v-col>
     </v-row>
@@ -35,12 +35,12 @@
     <v-row>
       <v-col cols="12" md="6">
         <h3>Console Output</h3>
-        <p class="text-justify display">
+        <p class="text-justify display"> {{this.console}}
         </p>
          </v-col>
       <v-col cols="12" md="6">
         <h3>Tests Results</h3>
-         <p class="text-justify display">
+         <p class="text-justify display"> {{this.tests}}
         </p>
       </v-col>
     </v-row>
@@ -58,21 +58,24 @@ export default {
 
   data: () => ({
     instructions: '',
-    editorTests: null,
+    console: '',
+    tests: '',
+    editorTest: null,
     editorTemplate: null,
     editorSandbox: null
   }),
   methods: {
     async saving () {
       console.log('i saved')
-      const { instructions, editorTests, editorSandbox } = this
+      const { instructions, editorTest, editorSandbox } = this
+
       try {
         const result = await this.axios.post(
           'http://localhost:3000/api/v1/exercise',
           {
             instructions,
             lang: 'python',
-            tests: editorTests.getValue(),
+            tests: editorTest.getValue(),
             solution: editorSandbox.getValue(),
             template_regions: ['France'],
             template_regions_rw: [0],
@@ -88,17 +91,18 @@ export default {
     },
     async run () {
       console.log('i ran')
-      const { editorTests, editorSandbox } = this
+      const { editorTest, editorSandbox } = this
       try {
         const result = await this.axios.post(
           'http://localhost:3000/api/v1/exercise/sandbox',
           {
             lang: 'python',
-            tests: editorTests.getValue(),
+            tests: editorTest.getValue(),
             solution: editorSandbox.getValue()
           }
         )
-        console.log('result' + JSON.stringify(result))
+        this.console = result.stdout
+        this.tests = result.tests
       } catch (err) {
         console.log('error')
         this.errorLogin = err
