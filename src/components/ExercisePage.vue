@@ -6,13 +6,42 @@
       </v-col>
     </v-row>
     <v-row>
-      <v-flex xs6>
+
+      <v-alert
+    v-model="alert"
+      dismissible
+      type="success"
+    >
+      {{this.message}}
+    </v-alert>
+    </v-row>
+    <v-row>
+      <v-col cols="6" sm="3">
+          <v-text-field
+          v-model="nameExercise"
+            label="Nom"
+          ></v-text-field>
+        </v-col>
+     <v-col cols="6" sm="3">
+        <v-select
+        label="langues"
+          v-model="languesDef"
+          :items="langues"
+          solo
+          single-line
+        ></v-select>
+      </v-col>
+      <v-col cols="6" sm="3">
         <v-form>
           <v-btn color="success" class="mr-4" @click="saving">Save this Exercise</v-btn>
         </v-form>
+        </v-col>
+    </v-row>
+<v-row>
+  <v-col class="d-flex" cols="12" sm="6">
         <h3>Instructions</h3>
         <v-textarea filled v-model="instructions" auto-grow></v-textarea>
-      </v-flex>
+        </v-col>
       <v-col cols="12" md="6">
         <h3>Tests</h3>
         <div label="Test" id="editorTest" class="exercise-editor-ace-editor" />
@@ -40,8 +69,19 @@
          </v-col>
       <v-col cols="12" md="6">
         <h3>Tests Results</h3>
-         <p class="text-justify display"> {{this.tests}}
-        </p>
+        <div v-for="(test) in tests"
+         v-bind:key="test.name">
+         <v-alert
+          v-if="!test.failure"
+         type="success">
+         {{test.name}}
+         </v-alert>
+         <v-alert
+          v-else
+         type="error">
+         {{test.name}} -> {{test.failure.message}}
+         </v-alert>
+        </div>
       </v-col>
     </v-row>
   </v-container>
@@ -57,16 +97,20 @@ export default {
   name: 'ExercisePage',
 
   data: () => ({
+    alert: false,
+    nameExercice: '',
+    languesDef: 'Python',
+    langues: ['Python'],
+    message: '',
     instructions: '',
     console: '',
-    tests: '',
+    tests: [],
     editorTest: null,
     editorTemplate: null,
     editorSandbox: null
   }),
   methods: {
     async saving () {
-      console.log('i saved')
       const { instructions, editorTest, editorSandbox } = this
 
       try {
@@ -80,17 +124,19 @@ export default {
             template_regions: ['France'],
             template_regions_rw: [0],
             difficulty: 1,
-            score: 50
+            score: 50,
+            creation_date: new Date()
           }
         )
-        console.log('result' + JSON.stringify(result))
+        this.message = 'The exercise has been saved'
+        this.alert = true
+        console.log(result)
       } catch (err) {
         console.log('error')
         this.errorLogin = err
       }
     },
     async run () {
-      console.log('i ran')
       const { editorTest, editorSandbox } = this
       try {
         const result = await this.axios.post(
@@ -101,8 +147,8 @@ export default {
             solution: editorSandbox.getValue()
           }
         )
-        this.console = result.stdout
-        this.tests = result.tests
+        this.console = result.data.stdout
+        this.tests = result.data.result.tests
       } catch (err) {
         console.log('error')
         this.errorLogin = err
@@ -133,7 +179,6 @@ export default {
 }
 
 .display{
-  background-color: rgb(49, 48, 48);
   position: relative;
   height: 20rem;
 }
