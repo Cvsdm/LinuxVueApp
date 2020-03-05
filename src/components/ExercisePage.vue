@@ -98,7 +98,7 @@ export default {
 
   data: () => ({
     alert: false,
-    nameExercice: '',
+    nameExercise: '',
     languesDef: 'Python',
     langues: ['Python'],
     message: '',

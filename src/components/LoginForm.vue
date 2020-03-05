@@ -28,7 +28,7 @@
             :disabled="!valid"
             color="success"
             class="mr-4"
-            @click="login"
+            @click="loginAction"
            >
             Validate
           </v-btn>
@@ -39,12 +39,15 @@
 </template>
 
 <script>
+
+import { mapActions, mapGetters } from 'vuex'
+
 export default {
   name: 'LoginForm',
 
   data: () => ({
     valid: false,
-    password: 'YPPCElTHfM',
+    password: 'BzG1dUTlov',
     passwordRules: [
       v => !!v || 'Password is required',
       v => v.length <= 10 || 'Password must be less than 10 characters'
@@ -56,21 +59,22 @@ export default {
     ]
   }),
   methods: {
-    async login () {
+    ...mapActions('user', ['login']),
+
+    async loginAction () {
       const { email, password } = this
-      try {
-        const result = await this.axios.post('http://localhost:3000/api/v1/login', {
-          username: email,
-          password
-        })
-        this.$root.user = result.data
-        this.loggedIn = true
+
+      await this.login({ email, password })
+      if (this.isAuthenticated) {
         this.$router.push({ name: 'exercise' })
-      } catch (err) {
+      } else {
         console.log('error')
-        this.errorLogin = err
       }
     }
+  },
+  computed: {
+    ...mapGetters('user', ['isAuthenticated'])
   }
+
 }
 </script>
