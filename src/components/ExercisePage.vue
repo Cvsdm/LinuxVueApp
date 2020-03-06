@@ -133,7 +133,6 @@ export default {
         console.log(result)
       } catch (err) {
         console.log('error')
-        this.errorLogin = err
       }
     },
     async run () {
@@ -151,7 +150,6 @@ export default {
         this.tests = result.data.result.tests
       } catch (err) {
         console.log('error')
-        this.errorLogin = err
       }
     }
   },

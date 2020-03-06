@@ -1,12 +1,16 @@
 <template>
   <v-container>
-      <v-row v-for="module in modules" v-bind:key="module.id">
-          <v-btn text large @click="moreInfoModule">{{module.name}}</v-btn>
+    <v-row>
+      <div v-for="module in modules" v-bind:key="module.id">
+      <v-row >
+          <v-btn text large @click="moreInfoModule(module.id)">{{module.name}}</v-btn>
+      </v-row>
       <v-row>
           <v-col v-for="session in sessions" v-bind:key="session.id">
             <v-card
-              class="mx-auto"
-              max-width="344"
+              class="elevation-20"
+              max-width="500"
+              height='100%'
             >
     <v-card-text>
       <p class="display-1 text--primary">
@@ -16,7 +20,8 @@
   </v-card>
           </v-col>
       </v-row>
-      </v-row>
+      </div>
+    </v-row>
   </v-container>
 </template>
 
@@ -34,18 +39,14 @@ export default {
     ...mapActions('sessions', ['fetchSessionsForModule']),
     ...mapActions('exercises', ['fetchExercisesForSession']),
 
-    MoreInfoModule (moduleId) {
-      this.$router.push({ name: 'module', params: { moduleId: moduleId } })
+    moreInfoModule (mId) {
+      this.$router.push({ name: 'module', params: { id: mId } })
     }
   },
   async mounted () {
     await this.fetchModules()
     await Promise.all(this.modules.map(m => this.fetchSessionsForModule({ moduleId: m.id })))
-    await Promise.all(this.sessions.map(s => this.fetchExercisesForSession({ sessionId: s.Id })))
-
-    console.log('modules: ' + JSON.stringify(this.modules))
-    console.log('sessions: ' + JSON.stringify(this.sessions))
-    console.log('exercises: ' + JSON.stringify(this.exercises))
+    await Promise.all(this.sessions.map(s => this.fetchExercisesForSession({ sessionId: s.id })))
   },
   computed: {
     ...mapState('modules', ['modules']),

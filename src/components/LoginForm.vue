@@ -66,7 +66,7 @@ export default {
 
       await this.login({ email, password })
       if (this.isAuthenticated) {
-        this.$router.push({ name: 'exercise' })
+        this.$router.push({ name: 'modules' })
       } else {
         console.log('error')
       }

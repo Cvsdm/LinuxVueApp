@@ -46,7 +46,6 @@ const actions = {
     commit('AUTH_REQUEST')
     try {
       const { data } = await axios.post(api('/login'), { username: email, password })
-      console.log('youshouldbeconnected')
       commit('AUTH_SUCCESS', data)
     } catch (err) {
       commit('AUTH_ERROR')
