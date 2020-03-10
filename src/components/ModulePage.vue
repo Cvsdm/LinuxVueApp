@@ -5,7 +5,7 @@
       <v-row v-for="session in sessions" v-bind:key="session.id">
       <v-row><p class="display-1 text--primary">{{session.name}}</p></v-row>
       <v-row>
-                   <v-col v-for="exercise in exercises" v-bind:key="exercise.id">
+            <v-col v-for="exercise in exercises" v-bind:key="exercise.id">
              <v-card
               class="mx-auto"
               width="180px"
@@ -64,7 +64,6 @@ export default {
     await this.fetchModule({ id: this.$route.params.id })
     await this.fetchSessionsForModule({ moduleId: this.$route.params.id })
     await Promise.all(this.sessions.map(s => this.fetchExercisesForSession({ sessionId: s.id })))
-    // console.log('exercises: ' + JSON.stringify(this.exercises))
   },
   computed: {
     ...mapState('modules', ['modules']),

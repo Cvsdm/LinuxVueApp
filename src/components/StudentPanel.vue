@@ -1,81 +1,77 @@
 <template>
   <v-container>
-
-<v-row>
-  <v-col class="d-flex" cols="12" sm="6">
-        <h3>{{this.exercise.title}}</h3>
-        <p>{{this.exercise}}</p>
+      <v-col>
+        <v-row v-for="exercise in exercises" :key="exercise.id">
+        <v-card
+          class="mx-auto"
+          width="180px"
+          height="100%"
+          @click="goExercise(exercise.id)"
+        >
+          <v-system-bar v-if="exercise.valid!=null" color="#0aa612" height="100%">
+            <v-card-text>
+              <p>{{exercise.title}}</p>
+            </v-card-text>
+          </v-system-bar>
+          <v-system-bar v-else color="#687178" height="100%">
+            <v-card-text>
+              <p>{{exercise.title}}</p>
+            </v-card-text>
+          </v-system-bar>
+        </v-card>
+        </v-row>
+      </v-col>
+<div v-if="this.exercise != null">
+      <v-row>
+        <v-col class="d-flex" cols="12" sm="6">
+          <h3>{{this.exercise.title}}</h3>
+          <p>{{this.exercise.instructions}}</p>
         </v-col>
-      <v-col cols="12" md="6">
-        <h3>Tests</h3>
-        <div label="Test" id="editorTest" class="exercise-editor-ace-editor" />
-      </v-col>
-    </v-row>
-    <v-row>
-      <v-col cols="12" md="6">
-        <h3>Sandbox</h3>
-        <div id="editorSandbox" class="exercise-editor-ace-editor" />
-          <v-btn color="success" class="mr-4" @click="run">Run Code</v-btn>
-      </v-col>
-    </v-row>
-
+        <v-col cols="12" md="6">
+          <h3>Tests</h3>
+          <div></div>
+        </v-col>
+      </v-row>
+    </div>
+    <div></div>
   </v-container>
 </template>
 
 <script>
-
-import { mapActions, mapState } from 'vuex'
-
-import ace from 'ace-builds/src-noconflict/ace'
-import 'ace-builds/src-noconflict/theme-monokai'
-import 'ace-builds/src-noconflict/mode-python'
-import 'ace-builds/webpack-resolver'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
   name: 'ExercisePage',
 
   data: () => ({
-    editorSandbox: null,
     exercise: null
   }),
   methods: {
     ...mapActions('modules', ['fetchModule']),
     ...mapActions('sessions', ['fetchSessionsForModule', 'fetchSession']),
-    ...mapActions('exercises', ['fetchExercisesForSession', 'getExerciseById']),
+    ...mapActions('exercises', ['fetchExercisesForSession']),
 
-    async run () {
-      const { editorSandbox } = this
-      try {
-        await this.axios.post(
-          'http://localhost:3000/api/v1/exercise/sandbox',
-          {
-            lang: 'python',
-            solution: editorSandbox.getValue()
-          }
-        )
-      } catch (err) {
-        console.log('error')
-      }
+    goExercise (eID) {
+      this.$router.push({ name: 'StudentExercise', params: { mId: this.$route.params.mId, sId: this.$route.params.sId, eId: eID } })
+      this.exercise = this.getExerciseById(eID)
     }
   },
   async mounted () {
-    console.log('mid ' + this.$route.params.mId + '  sid ' + this.$route.params.sId)
-    await this.fetchModule({ id: this.$route.params.mId })
     await this.fetchSession({ id: this.$route.params.sId })
     await this.fetchExercisesForSession({ sessionId: this.$route.params.sId })
-    this.exercise = await this.getExerciseById({ id: this.$route.params.eId })
 
-    this.editorSandbox = ace.edit('editorSandbox')
-    this.editorSandbox.setTheme('ace/theme/monokai')
-    this.editorSandbox.session.setMode(`ace/mode/${this.lang}`)
+    console.log('exercises' + JSON.stringify(this.exercises))
+
+    this.exercise = this.getExerciseById(this.$route.params.eId)
+
+    console.log(this.exercise)
   },
   computed: {
-    ...mapState('modules', ['modules']),
     ...mapState('sessions', ['sessions']),
-    ...mapState('exercises', ['exercises'])
+    ...mapState('exercises', ['exercises']),
+    ...mapGetters('exercises', ['getExerciseById'])
   }
 }
-
 </script>
 <style>
 .exercise-editor-ace-editor {
@@ -83,7 +79,7 @@ export default {
   height: 20rem;
 }
 
-.display{
+.display {
   position: relative;
   height: 20rem;
 }
