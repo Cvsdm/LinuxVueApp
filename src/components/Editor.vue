@@ -11,7 +11,7 @@
 </template>
 
 <script>
-
+import { mapActions } from 'vuex'
 import ace from 'ace-builds/src-noconflict/ace'
 import 'ace-builds/src-noconflict/theme-monokai'
 import 'ace-builds/src-noconflict/mode-python'
@@ -24,22 +24,15 @@ export default {
     editor: null
   }),
   methods: {
+    ...mapActions('attempts', ['createAttemptForSession']),
     async run () {
-      const { editor } = this
-      try {
-        await this.axios.post('http://localhost:3000/api/v1/exercise/sandbox', {
-          lang: 'python',
-          solution: editor.getValue()
-        })
-      } catch (err) {
-        console.log('error')
-      }
+      await this.createAttemptForSession({ exerciseId: this.$route.params.eId, sessionId: this.$route.params.sId, solution: this.editor.getValue() })
     }
   },
   mounted () {
     this.editor = ace.edit('editor')
     this.editor.setTheme('ace/theme/monokai')
-    this.editor.session.setMode(`ace/mode/${this.lang}`)
+    this.editor.session.setMode('ace/mode/python')
   }
 }
 </script>

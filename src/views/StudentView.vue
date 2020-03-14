@@ -1,8 +1,17 @@
 <template>
   <div class="panel">
+    <v-row>
+    <v-col>
     <ExercisePanel/>
+    </v-col>
+      <v-col>
   <StudentPanel :exoID="exoID"/>
-  <Editor/>
+    <Editor/>
+      </v-col>
+      <v-col>
+<TestResults/>
+  </v-col>
+  </v-row>
   </div>
 </template>
 
@@ -11,13 +20,15 @@
 import StudentPanel from '@/components/StudentPanel.vue'
 import Editor from '@/components/Editor.vue'
 import ExercisePanel from '@/components/ExercicePanel.vue'
+import TestResults from '@/components/testsResult.vue'
 
 export default {
   name: 'StudentView',
   components: {
     StudentPanel,
     Editor,
-    ExercisePanel
+    ExercisePanel,
+    TestResults
   },
   data: () => ({
     exoID: 0

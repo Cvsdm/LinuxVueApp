@@ -156,15 +156,15 @@ export default {
   mounted () {
     this.editorTest = ace.edit('editorTest')
     this.editorTest.setTheme('ace/theme/monokai')
-    this.editorTest.session.setMode(`ace/mode/${this.lang}`)
+    this.editorTest.session.setMode('ace/mode/python')
 
     this.editorSandbox = ace.edit('editorSandbox')
     this.editorSandbox.setTheme('ace/theme/monokai')
-    this.editorSandbox.session.setMode(`ace/mode/${this.lang}`)
+    this.editorSandbox.session.setMode('ace/mode/python')
 
     this.editorTemplate = ace.edit('editorTemplate')
     this.editorTemplate.setTheme('ace/theme/monokai')
-    this.editorTemplate.session.setMode(`ace/mode/${this.lang}`)
+    this.editorTemplate.session.setMode('ace/mode/python')
   }
 }
 

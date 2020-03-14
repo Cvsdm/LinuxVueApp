@@ -5,15 +5,14 @@
       <v-row>
         <v-col class="d-flex" cols="12" sm="6">
           <h3>{{exercise.title}}</h3>
-          <p v-html= "exercise.instructions"></p>
-        </v-col>
-        <v-col cols="12" md="6">
-          <h3>Tests</h3>
-          <div></div>
         </v-col>
       </v-row>
+      <v-row>
+        <v-col class="d-flex" cols="12" sm="6">
+          <p v-html= "exercise.instructions"></p>
+          </v-col>
+      </v-row>
     </div>
-    <div></div>
   </v-container>
 </template>
 
