@@ -3,14 +3,10 @@
 
 <div v-if="this.exercise != null">
       <v-row>
-        <v-col class="d-flex" cols="12" sm="6">
           <h3>{{exercise.title}}</h3>
-        </v-col>
       </v-row>
       <v-row>
-        <v-col class="d-flex" cols="12" sm="6">
           <p v-html= "exercise.instructions"></p>
-          </v-col>
       </v-row>
     </div>
   </v-container>

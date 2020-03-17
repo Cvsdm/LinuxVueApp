@@ -35,7 +35,6 @@ const actions = {
     commit('AUTH_REQUEST')
     try {
       const { data } = await axios.get(api('/me'))
-
       commit('AUTH_SUCCESS', data)
     } catch (err) {
       commit('AUTH_ERROR')

@@ -6,7 +6,7 @@
           <v-btn text large @click="moreInfoModule(module.id)">{{module.name}}</v-btn>
       </v-row>
       <v-row>
-          <v-col v-for="session in sessions" v-bind:key="session.id">
+          <v-col v-for="session in getSessionsByModuleId(module.id)" v-bind:key="session.id">
             <v-card
               class="elevation-20"
               max-width="500"
@@ -26,7 +26,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
 
@@ -51,7 +51,8 @@ export default {
   computed: {
     ...mapState('modules', ['modules']),
     ...mapState('sessions', ['sessions']),
-    ...mapState('exercises', ['exercises'])
+    ...mapState('exercises', ['exercises']),
+    ...mapGetters('sessions', ['getSessionsByModuleId'])
   }
 }
 

@@ -2,11 +2,9 @@
   <v-container>
 
 <h3> Tests </h3>
-<div v-if="this.attempt != null">
+<div v-if="attempt">
       <v-row>
-        <v-col class="d-flex" cols="12" sm="6">
           <h3>{{attempt.title}}</h3>
-        </v-col>
       </v-row>
     </div>
   </v-container>
@@ -26,11 +24,12 @@ export default {
   },
   async mounted () {
     await this.fetchLastAttemptForExercise({ sessionId: this.$route.params.sId, exerciseId: this.$route.params.eId })
-    this.attempt = this.getLastAttemptForExercise(this.$route.params.eId)
+    this.LastAttempt = this.getLastAttemptForExercise(this.$route.params.eId)
+    this.attempt = this.getAttemptById(this.LastAttempt.id)
     console.log(this.attempt)
   },
   computed: {
-    ...mapGetters('attempts', ['getLastAttemptForExercise'])
+    ...mapGetters('attempts', ['getLastAttemptForExercise', 'getAttemptById'])
   }
 }
 </script>

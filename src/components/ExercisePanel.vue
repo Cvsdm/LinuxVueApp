@@ -1,7 +1,7 @@
  <template>
   <v-container>
      <v-col>
-        <v-row v-for="exercise in exercises" :key="exercise.id">
+        <v-row v-for="exercise in dispExercises" :key="exercise.id">
         <v-card
           class="mx-auto"
           width="180px"
@@ -25,11 +25,13 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapGetters } from 'vuex'
 
 export default {
   name: 'ExercisePage',
-  data: () => ({}),
+  data: () => ({
+    dispExercises: []
+  }),
   methods: {
     ...mapActions('modules', ['fetchModule']),
     ...mapActions('sessions', ['fetchSessionsForModule', 'fetchSession']),
@@ -42,10 +44,10 @@ export default {
   async mounted () {
     await this.fetchSession({ id: this.$route.params.sId })
     await this.fetchExercisesForSession({ sessionId: this.$route.params.sId })
+    this.dispExercises = this.getExercisesBySessionId(this.$route.params.sId)
   },
   computed: {
-    ...mapState('sessions', ['sessions']),
-    ...mapState('exercises', ['exercises'])
+    ...mapGetters('exercises', ['getExercisesBySessionId'])
   }
 }
 </script>

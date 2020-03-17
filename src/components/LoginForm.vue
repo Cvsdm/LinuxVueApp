@@ -47,7 +47,7 @@ export default {
 
   data: () => ({
     valid: false,
-    password: 'BzG1dUTlov',
+    password: 'cLvnWjT1Ht',
     passwordRules: [
       v => !!v || 'Password is required',
       v => v.length <= 10 || 'Password must be less than 10 characters'

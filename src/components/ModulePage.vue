@@ -5,7 +5,7 @@
       <v-row v-for="session in sessions" v-bind:key="session.id">
       <v-row><p class="display-1 text--primary">{{session.name}}</p></v-row>
       <v-row>
-            <v-col v-for="exercise in exercises" v-bind:key="exercise.id">
+            <v-col v-for="exercise in getExercisesBySessionId(session.id)" v-bind:key="exercise.id">
              <v-card
               class="mx-auto"
               width="180px"
@@ -42,7 +42,7 @@
 </template>
 
 <script>
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 
 export default {
 
@@ -68,7 +68,8 @@ export default {
   computed: {
     ...mapState('modules', ['modules']),
     ...mapState('sessions', ['sessions']),
-    ...mapState('exercises', ['exercises'])
+    ...mapState('exercises', ['exercises']),
+    ...mapGetters('exercises', ['getExercisesBySessionId'])
   }
 }
 

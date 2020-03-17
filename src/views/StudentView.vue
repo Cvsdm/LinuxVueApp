@@ -19,7 +19,7 @@
 // @ is an alias to /src
 import StudentPanel from '@/components/StudentPanel.vue'
 import Editor from '@/components/Editor.vue'
-import ExercisePanel from '@/components/ExercicePanel.vue'
+import ExercisePanel from '@/components/ExercisePanel.vue'
 import TestResults from '@/components/testsResult.vue'
 
 export default {
@@ -41,6 +41,7 @@ export default {
   methods: {
     updateExo () {
       this.exoID = Number(this.$route.params.eId)
+      console.log('rID : ' + this.$route.params.eId)
     }
   },
   mounted () {
