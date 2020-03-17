@@ -2,7 +2,7 @@
   <v-container>
 
 <h3> Tests </h3>
-<div v-if="attempt">
+<div v-if="attempt != null">
       <v-row>
           <h3>{{attempt.title}}</h3>
       </v-row>
@@ -24,9 +24,9 @@ export default {
   },
   async mounted () {
     await this.fetchLastAttemptForExercise({ sessionId: this.$route.params.sId, exerciseId: this.$route.params.eId })
-    this.LastAttempt = this.getLastAttemptForExercise(this.$route.params.eId)
-    this.attempt = this.getAttemptById(this.LastAttempt.id)
-    console.log(this.attempt)
+    this.attempt = this.getLastAttemptForExercise(this.$route.params.eId)
+    // this.attempt = this.getAttemptById(this.LastAttempt.id)
+    // console.log(this.attempt)
   },
   computed: {
     ...mapGetters('attempts', ['getLastAttemptForExercise', 'getAttemptById'])

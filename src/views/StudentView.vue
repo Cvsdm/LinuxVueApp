@@ -21,6 +21,7 @@ import StudentPanel from '@/components/StudentPanel.vue'
 import Editor from '@/components/Editor.vue'
 import ExercisePanel from '@/components/ExercisePanel.vue'
 import TestResults from '@/components/testsResult.vue'
+import { mapActions } from 'vuex'
 
 export default {
   name: 'StudentView',
@@ -39,12 +40,18 @@ export default {
     }
   },
   methods: {
+    ...mapActions('modules', ['fetchModule']),
+    ...mapActions('sessions', ['fetchSessionsForModule', 'fetchSession']),
+    ...mapActions('exercises', ['fetchExercisesForSession', 'fetchExerciseForSession']),
+
     updateExo () {
       this.exoID = Number(this.$route.params.eId)
       console.log('rID : ' + this.$route.params.eId)
     }
   },
-  mounted () {
+  async mounted () {
+    await this.fetchSession({ id: this.$route.params.sId })
+    await this.fetchExercisesForSession({ sessionId: this.$route.params.sId })
     this.updateExo()
   }
 }

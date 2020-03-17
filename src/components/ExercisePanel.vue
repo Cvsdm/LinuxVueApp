@@ -33,8 +33,6 @@ export default {
     dispExercises: []
   }),
   methods: {
-    ...mapActions('modules', ['fetchModule']),
-    ...mapActions('sessions', ['fetchSessionsForModule', 'fetchSession']),
     ...mapActions('exercises', ['fetchExercisesForSession']),
 
     goExercise (eID) {
@@ -42,9 +40,9 @@ export default {
     }
   },
   async mounted () {
-    await this.fetchSession({ id: this.$route.params.sId })
-    await this.fetchExercisesForSession({ sessionId: this.$route.params.sId })
+    console.log('sID' + this.$route.params.sId)
     this.dispExercises = this.getExercisesBySessionId(this.$route.params.sId)
+    console.log(this.dispExercises)
   },
   computed: {
     ...mapGetters('exercises', ['getExercisesBySessionId'])

@@ -1,12 +1,12 @@
 <template>
   <v-container>
 
-<div v-if="this.exercise != null">
+<div>
       <v-row>
-          <h3>{{exercise.title}}</h3>
+          <h3>{{exerciseTitle}}</h3>
       </v-row>
       <v-row>
-          <p v-html= "exercise.instructions"></p>
+          <p v-html= "exerciseInstructions"></p>
       </v-row>
     </div>
   </v-container>
@@ -18,32 +18,34 @@ import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   name: 'ExercisePage',
   props: {
-    exoID: {
-      type: Number,
+    instructions: {
+      type: String,
+      required: true
+    },
+    title: {
+      type: String,
       required: true
     }
   },
 
   data: () => ({
-    exercise: null
+    exerciseTitle: null,
+    exerciseInstructions: null
   }),
   methods: {
-    ...mapActions('modules', ['fetchModule']),
-    ...mapActions('sessions', ['fetchSessionsForModule', 'fetchSession']),
     ...mapActions('exercises', ['fetchExercisesForSession', 'fetchExerciseForSession'])
   },
   async mounted () {
-    await this.fetchSession({ id: this.$route.params.sId })
     await this.fetchExercisesForSession({ sessionId: this.$route.params.sId })
   },
-  watch: {
+  /* watch: {
     exoID: async function () {
       await this.fetchExerciseForSession({ sessionId: this.$route.params.sId, exerciseId: this.exoID })
       this.exercise = this.getExerciseById(this.exoID)
+      // console.log(this.exercise)
     }
-  },
+  } , */
   computed: {
-    ...mapState('sessions', ['sessions']),
     ...mapState('exercises', ['exercises']),
     ...mapGetters('exercises', ['getExerciseById'])
   }

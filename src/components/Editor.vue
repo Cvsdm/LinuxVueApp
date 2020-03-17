@@ -1,7 +1,7 @@
 <template>
   <v-container>
       <v-row>
-        <v-col cols="12" md="6">
+        <v-col>
           <h3>Sandbox</h3>
           <div id="editor" class="exercise-editor-ace-editor" />
           <v-btn color="success" class="mr-4" @click="run">Run Code</v-btn>
@@ -19,14 +19,22 @@ import 'ace-builds/webpack-resolver'
 
 export default {
   name: 'Editor',
+  props: {
+    regions: {
+      type: Array,
+      required: true
+    }
+  },
 
   data: () => ({
-    editor: null
+    editor: null,
+    regions: []
   }),
   methods: {
     ...mapActions('attempts', ['createAttemptForSession']),
     async run () {
-      await this.createAttemptForSession({ exerciseId: this.$route.params.eId, sessionId: this.$route.params.sId, solution: this.editor.getValue() })
+      console.log('value editor' + this.editor.getValue())
+      await this.createAttemptForSession({ exerciseId: this.$route.params.eId, sessionId: this.$route.params.sId, regions: this.editor.getValue() })
     }
   },
   mounted () {
