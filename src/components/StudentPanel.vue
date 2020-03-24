@@ -1,51 +1,59 @@
 <template>
   <v-container>
 
-<div>
+<div v-if="this.exercise != null">
       <v-row>
-          <h3>{{exerciseTitle}}</h3>
+          <h3>{{exercise.title}}</h3>
       </v-row>
       <v-row>
-          <p v-html= "exerciseInstructions"></p>
+          <p v-html= "exercise.instructions"></p>
       </v-row>
+      <Editor v-bind:template_regions= "exercise.template_regions"
+              v-bind:template_regions_rw="exercise.template_regions_rw"/>
     </div>
   </v-container>
 </template>
 
 <script>
 import { mapActions, mapState, mapGetters } from 'vuex'
+import Editor from './Editor'
 
 export default {
   name: 'ExercisePage',
+  components: {
+    Editor
+  },
   props: {
-    instructions: {
-      type: String,
-      required: true
-    },
-    title: {
-      type: String,
+    exoID: {
+      type: Number,
       required: true
     }
   },
 
   data: () => ({
-    exerciseTitle: null,
-    exerciseInstructions: null
+    exercise: null
   }),
   methods: {
-    ...mapActions('exercises', ['fetchExercisesForSession', 'fetchExerciseForSession'])
+    ...mapActions('exercises', ['fetchExercisesForSession', 'fetchExerciseForSession']),
+    ...mapActions('modules', ['fetchModules']),
+    ...mapActions('sessions', ['fetchSessionsForModule'])
   },
   async mounted () {
+    await this.fetchModules()
+    await Promise.all(this.modules.map(m => this.fetchSessionsForModule({ moduleId: m.id })))
+    await Promise.all(this.sessions.map(s => this.fetchExercisesForSession({ sessionId: s.id })))
     await this.fetchExercisesForSession({ sessionId: this.$route.params.sId })
+    await this.fetchExerciseForSession({ sessionId: this.$route.params.sId, exerciseId: this.exoID })
   },
-  /* watch: {
+  watch: {
     exoID: async function () {
       await this.fetchExerciseForSession({ sessionId: this.$route.params.sId, exerciseId: this.exoID })
       this.exercise = this.getExerciseById(this.exoID)
-      // console.log(this.exercise)
     }
-  } , */
+  },
   computed: {
+    ...mapState('modules', ['modules']),
+    ...mapState('sessions', ['sessions']),
     ...mapState('exercises', ['exercises']),
     ...mapGetters('exercises', ['getExerciseById'])
   }

@@ -20,15 +20,18 @@ import 'ace-builds/webpack-resolver'
 export default {
   name: 'Editor',
   props: {
-    regions: {
+    template_regions: {
+      type: Array,
+      required: true
+    },
+    template_regions_rw: {
       type: Array,
       required: true
     }
   },
 
   data: () => ({
-    editor: null,
-    regions: []
+    editor: null
   }),
   methods: {
     ...mapActions('attempts', ['createAttemptForSession']),
@@ -41,6 +44,9 @@ export default {
     this.editor = ace.edit('editor')
     this.editor.setTheme('ace/theme/monokai')
     this.editor.session.setMode('ace/mode/python')
+
+    console.log('template_regions' + this.template_regions)
+    console.log('template_regions_rw' + this.template_regions_rw)
   }
 }
 </script>

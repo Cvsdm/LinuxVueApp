@@ -6,7 +6,6 @@
     </v-col>
       <v-col>
   <StudentPanel :exoID="exoID"/>
-    <Editor/>
       </v-col>
       <v-col>
 <TestResults/>
@@ -18,7 +17,6 @@
 <script>
 // @ is an alias to /src
 import StudentPanel from '@/components/StudentPanel.vue'
-import Editor from '@/components/Editor.vue'
 import ExercisePanel from '@/components/ExercisePanel.vue'
 import TestResults from '@/components/testsResult.vue'
 import { mapActions } from 'vuex'
@@ -27,7 +25,6 @@ export default {
   name: 'StudentView',
   components: {
     StudentPanel,
-    Editor,
     ExercisePanel,
     TestResults
   },
