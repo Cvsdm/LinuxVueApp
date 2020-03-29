@@ -5,6 +5,19 @@
 <div v-if="attempt != null">
       <v-row>
           <h3>{{attempt.title}}</h3>
+          <div v-for="(test) in tests"
+         v-bind:key="test.name">
+         <v-alert
+          v-if="!test.failure"
+         type="success">
+         {{test.name}}
+         </v-alert>
+         <v-alert
+          v-else
+         type="error">
+         {{test.name}} -> {{test.failure.message}}
+         </v-alert>
+        </div>
       </v-row>
     </div>
   </v-container>

@@ -47,7 +47,28 @@ export default {
 
     console.log('template_regions' + this.template_regions)
     console.log('template_regions_rw' + this.template_regions_rw)
+
+    // GET THE RW REGIONS
+    const rw = this.template_regions_rw.indexOf(6)
+    if (rw !== -1) {
+      this.editor.setValue(this.template_regions[rw])
+    }
+
+    // GET THE RO REGIONS
+    const ro = this.template_regions_rw.indexOf(4)
+    if (ro !== -1) {
+      this.editor.setValue(this.editor.getValue() + this.template_regions[ro])
+    }
+
+    // GET THE SOLUTION REGION
+    const sol = this.template_regions_rw.indexOf(0)
+    if (sol !== -1) {
+      this.editor.setValue(this.editor.getValue() + this.template_regions[sol])
+    }
   }
+  /*
+  lien vers le stackoverflow:
+  https://stackoverflow.com/questions/39640328/how-to-make-multiple-chunk-of-lines-readonly-in-ace-editor */
 }
 </script>
 <style>
